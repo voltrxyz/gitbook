@@ -27,4 +27,3 @@ Adaptors are specialized components, plugged into vaults by vault owners, that h
 ```
 Vault <-> Adaptor <-> External Protocol
 ```
-

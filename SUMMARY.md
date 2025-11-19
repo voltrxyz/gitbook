@@ -32,7 +32,7 @@
 
 ## For Defi Protocols
 
-* [DeFi Protocol Overview](for-defi-protocols/publish-your-docs.md)
+* [DeFi Protocol Overview](for-defi-protocols/defi-protocol-overview.md)
 * [Adaptor Creation Guide](for-defi-protocols/adaptor-creation-guide/README.md)
   * [Core Components Implementation](for-defi-protocols/adaptor-creation-guide/core-components-implementation.md)
   * [Security Considerations](for-defi-protocols/adaptor-creation-guide/security-considerations.md)
