@@ -4,7 +4,7 @@ description: Modular infrastructure layer for structured yield strategies
 
 # Introduction to Voltr
 
-<figure><img src=".gitbook/assets/Twitter banner.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 Voltr opens up access to sophisticated yield generation strategies on Solana to anyone. Through our Vaults, users can participate in automated yield optimization without requiring deep knowledge of underlying DeFi protocols or complex trading strategies.
 
