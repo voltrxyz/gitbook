@@ -4,8 +4,7 @@ Welcome to the Voltr REST API. This API provides developers with the tools to qu
 
 ### Base URL
 
-All API endpoints are relative to the following base URL:
-https://api.voltr.xyz
+All API endpoints are relative to the following base URL: [https://api.voltr.xyz](https://api.voltr.xyz/)
 
 ### Authentication
 
@@ -19,9 +18,9 @@ This design ensures that user private keys are never required on the backend, ma
 
 The typical workflow for a developer is:
 
-1.  **Request**: Your application sends a `POST` request to a transaction creation endpoint (e.g., `/vault/{pubkey}/deposit`).
-2.  **Receive**: The API returns a JSON response containing the serialized transaction string.
-3.  **Sign & Send**: Your client-side application deserializes this string, signs it with the user's wallet, and sends it to the Solana network.
+1. **Request**: Your application sends a `POST` request to a transaction creation endpoint (e.g., `/vault/{pubkey}/deposit`).
+2. **Receive**: The API returns a JSON response containing the serialized transaction string.
+3. **Sign & Send**: Your client-side application deserializes this string, signs it with the user's wallet, and sends it to the Solana network.
 
 ```json
 {
@@ -32,4 +31,4 @@ The typical workflow for a developer is:
 
 ### Interactive Documentation
 
-For live testing and a detailed, interactive view of all endpoints, please visit our Swagger documentation: https://api.voltr.xyz/docs
+For live testing and a detailed, interactive view of all endpoints, please visit our Swagger documentation: [https://api.voltr.xyz/docs](https://api.voltr.xyz/docs)
