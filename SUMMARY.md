@@ -14,7 +14,7 @@
 
 ## For Vault Owners
 
-* [Owner Overview](for-vault-owners/publish-your-docs.md)
+* [Owner Overview](for-vault-owners/owner-overview.md)
 * [Current Integrations](for-vault-owners/current-integrations.md)
 * [Fees & Accounting](for-vault-owners/fees-and-accounting.md)
 * [Vault Initialization Guide](for-vault-owners/vault-initialization-guide/README.md)
