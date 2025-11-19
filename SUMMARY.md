@@ -41,9 +41,9 @@
 ## For Developers
 
 * [API Overview](for-developers/api-overview.md)
-* [Swagger Documentation](https://api.voltr.xyz/docs)
 * [Vaults Endpoint](for-developers/endpoints/vaults.md)
 * [Vault Endpoint](for-developers/endpoints/vault.md)
+* [Swagger Documentation](https://api.voltr.xyz/docs)
 
 ## Security
 
