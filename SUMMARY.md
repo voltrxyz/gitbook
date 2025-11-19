@@ -49,7 +49,3 @@
 * [Security Audits](security/security-audits.md)
 * [Terms and Conditions](security/terms-and-conditions.md)
 * [Disclaimer](security/disclaimer.md)
-
-***
-
-* [Drafts](drafts.md)
