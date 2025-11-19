@@ -38,6 +38,13 @@
   * [Security Considerations](for-defi-protocols/adaptor-creation-guide/security-considerations.md)
 * [Example Implementations](for-defi-protocols/example-implementations.md)
 
+## For Developers
+
+* [API Overview](for-developers/api-overview.md)
+* [Swagger Documentation](https://api.voltr.xyz/docs)
+* [Vaults Endpoint](for-developers/endpoints/vaults.md)
+* [Vault Endpoint](for-developers/endpoints/vault.md)
+
 ## Security
 
 * [Best Practices](security/best-practices.md)
