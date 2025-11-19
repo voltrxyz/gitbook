@@ -1,3 +1,0 @@
-# Zerebro
-
-Coming Soon

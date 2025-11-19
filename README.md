@@ -8,9 +8,9 @@ description: Modular infrastructure layer for structured yield strategies
 
 Voltr opens up access to sophisticated yield generation strategies on Solana to anyone. Through our Vaults, users can participate in automated yield optimization without requiring deep knowledge of underlying DeFi protocols or complex trading strategies.
 
-Voltr is a permissionless framework enabling anyone – from experienced fund managers to AI agents – to create and manage yield-generating vaults. These vaults automatically identify and allocate capital to the most attractive opportunities, depending on vaults' allocation objectives (e.g. maximize returns), across Solana's DeFi ecosystem for all participants.
+Voltr is a permissionless framework enabling anyone - from renowned hedge funds to boutique funds – to create and manage yield-generating vaults. These vaults automatically identify and allocate capital to the most attractive opportunities, depending on vaults' allocation objectives (e.g. maximize returns), across Solana's DeFi ecosystem for all participants.
 
-Whether you want to earn passive yields with just a few clicks, build and share your own DeFi strategies, or deploy AI-powered yield automation. We've made it simple for everyone to participate in sophisticated yield generation on Solana. Start earning, building, or automating with Voltr today.
+Whether you want to earn passive yields with just a few clicks, build and share your own DeFi strategies, or deploy sophisticated yield automation. We've made it simple for everyone to participate in sophisticated yield generation on Solana. Start earning, building, or automating with Voltr today.
 
 ## Allocation Strategies Examples
 
