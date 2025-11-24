@@ -11,6 +11,10 @@
 * [User Overview](for-users/user-overview.md)
 * [User Interface Guide](for-users/user-interface-guide.md)
 * [Web Application](https://voltr.xyz)
+* [Ranger USD (rgUSD)](for-users/ranger-usd-rgusd/README.md)
+  * [Yield Generation](for-users/ranger-usd-rgusd/yield-generation.md)
+  * [Risk Management](for-users/ranger-usd-rgusd/risk-management.md)
+  * [Audit & Transparency](for-users/ranger-usd-rgusd/audit-and-transparency.md)
 
 ## For Vault Owners
 
