@@ -10,16 +10,17 @@ Import the required dependencies:
 
 ```typescript
 import { BN } from "@coral-xyz/anchor";
-import { VoltrClient, SEEDS, DEFAULT_ADAPTOR_PROGRAM_ID} from "@voltr/vault-sdk";
+import { VoltrClient, SEEDS, LENDING_ADAPTOR_PROGRAM_ID } from "@voltr/vault-sdk";
 import {
   Connection,
   Keypair,
   PublicKey,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
+import fs from "fs";
 ```
 
-Vault owners can integrate with the default adaptor or custom adaptors created by DeFi teams.
+Vault owners can integrate with the lending adaptor or custom adaptors created by DeFi teams.
 
 ### Adding Adaptor
 
@@ -76,7 +77,7 @@ const counterPartyTa = new PublicKey("...");
 
 const [strategy] = PublicKey.findProgramAddressSync(
   [SEEDS.STRATEGY, counterPartyTa.toBuffer()],
-  DEFAULT_ADAPTOR_PROGRAM_ID
+  LENDING_ADAPTOR_PROGRAM_ID
 );
 ```
 

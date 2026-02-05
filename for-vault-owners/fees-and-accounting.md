@@ -71,11 +71,97 @@ If the vault incurs a loss, the total asset value is reduced by the loss amount.
 
 ***
 
+### Additional Fee Types
+
+In addition to performance and management fees, Voltr supports:
+
+#### Issuance Fee
+
+A fee charged when users deposit into the vault. This fee is deducted from the LP tokens minted to the depositor.
+
+$$
+\text{LP Minted} = \frac{\text{Deposit Amount} \times (10000 - \text{Issuance Fee bps})}{10000} \times \frac{\text{Total LP Supply}}{\text{Total Assets}}
+$$
+
+#### Redemption Fee
+
+A fee charged when users withdraw from the vault. This fee is deducted from the assets returned to the withdrawer.
+
+$$
+\text{Assets Received} = \text{Proportional Assets} \times \frac{(10000 - \text{Redemption Fee bps})}{10000}
+$$
+
+***
+
+### SDK Integration
+
+#### Harvest Accumulated Fees
+
+```typescript
+import { VoltrClient } from "@voltr/vault-sdk";
+import { Connection, PublicKey } from "@solana/web3.js";
+
+const connection = new Connection(rpcUrl);
+const client = new VoltrClient(connection);
+
+// Harvest fees (can be called by anyone, fees go to designated recipients)
+const harvestIx = await client.createHarvestFeeIx({
+  harvester: harvesterPubkey,      // Account calling harvest
+  vaultManager: vaultManagerPubkey, // Manager fee recipient
+  vaultAdmin: vaultAdminPubkey,     // Admin fee recipient
+  protocolAdmin: protocolAdminPubkey, // Protocol fee recipient
+  vault: vaultPubkey,
+});
+```
+
+#### Calibrate High Water Mark
+
+The admin can calibrate the high water mark to reset the performance fee baseline:
+
+```typescript
+const calibrateIx = await client.createCalibrateHighWaterMarkIx({
+  vault: vaultPubkey,
+  admin: adminPubkey,
+});
+```
+
+#### Query Fee Information
+
+```typescript
+// Get accumulated admin fees (in LP tokens)
+const adminFees = await client.getAccumulatedAdminFeesForVault(vaultPubkey);
+console.log("Admin fees:", adminFees.toString());
+
+// Get accumulated manager fees (in LP tokens)
+const managerFees = await client.getAccumulatedManagerFeesForVault(vaultPubkey);
+console.log("Manager fees:", managerFees.toString());
+
+// Get high water mark information
+const hwm = await client.getHighWaterMarkForVault(vaultPubkey);
+console.log("Highest asset per LP:", hwm.highestAssetPerLp);
+console.log("Last updated:", new Date(hwm.lastUpdatedTs * 1000));
+
+// Get current asset per LP ratio
+const assetPerLp = await client.getCurrentAssetPerLpForVault(vaultPubkey);
+console.log("Current asset per LP:", assetPerLp);
+
+// Get LP supply breakdown
+const lpBreakdown = await client.getVaultLpSupplyBreakdown(vaultPubkey);
+console.log("Circulating LP:", lpBreakdown.circulating.toString());
+console.log("Unharvested fees:", lpBreakdown.unharvestedFees.toString());
+console.log("Unrealised fees:", lpBreakdown.unrealisedFees.toString());
+console.log("Total LP:", lpBreakdown.total.toString());
+```
+
+***
+
 ### Summary
 
 * **Profit Handling:** Profits are added to the total asset value, but a portion remains locked and degrades over time.
-* **High Water Mark:** Only profits that exceed the historical peak (high water mark) are subject to fees.
-* **Fee Calculation:** Fees are calculated as a percentage of the eligible profit and then minted as new tokens proportional to the vault's current state.
-* **Fee Splitting:** The fee is divided between parties according to predefined shares.
+* **High Water Mark:** Only profits that exceed the historical peak (high water mark) are subject to performance fees.
+* **Fee Calculation:** Fees are calculated as a percentage of the eligible profit and then minted as new LP tokens.
+* **Fee Splitting:** Performance and management fees are divided between admin and manager according to predefined shares.
+* **Issuance Fee:** Optional fee on deposits, reduces LP tokens minted.
+* **Redemption Fee:** Optional fee on withdrawals, reduces assets returned.
 
 This approach ensures that fees are only taken on genuine, new gains while protecting investor interests by avoiding fees on previously earned or unrealized profit.

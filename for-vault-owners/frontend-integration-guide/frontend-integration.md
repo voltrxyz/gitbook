@@ -106,14 +106,14 @@ const handleDeposit = async (amount: string) => {
     depositAmount,
     {
       vault,
-      userAuthority: wallet.publicKey,
+      userTransferAuthority: wallet.publicKey,
       vaultAssetMint,
       assetTokenProgram,
     }
   );
-  
+
   instructions.push(depositIx);
-  
+
   return instructions;
 };
 ```
@@ -167,37 +167,70 @@ return (
 
 ### Withdrawal Implementation
 
+Voltr uses a **two-phase withdrawal system** for vault withdrawals:
+
+1. **Request Withdrawal** - User requests to withdraw, LP tokens are escrowed
+2. **Claim Withdrawal** - After the waiting period, user claims their assets
+
+This design prevents sandwich attacks and ensures fair withdrawal pricing.
+
 #### 1. Create Withdrawal Component
 
 ```typescript
 import React, { useState } from 'react';
 
-const VaultWithdraw = ({ 
-  wallet, 
-  vault, 
-  vaultAssetMint, 
-  assetTokenProgram 
+const VaultWithdraw = ({
+  wallet,
+  vault,
+  vaultAssetMint,
+  assetTokenProgram
 }) => {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   // Implementation below
 };
 ```
 
-#### 2. Handle Token Withdrawals
+#### 2. Phase 1: Request Withdrawal
 
 ```typescript
-const handleWithdraw = async (amount: string) => {
+const handleRequestWithdraw = async (amount: string) => {
   const instructions: TransactionInstruction[] = [];
   const withdrawAmount = new BN(amount);
-  
+
+  // Create request withdraw instruction
+  const requestWithdrawIx = await client.createRequestWithdrawVaultIx(
+    {
+      amount: withdrawAmount,
+      isAmountInLp: false,      // true if amount is in LP tokens
+      isWithdrawAll: false,     // true to withdraw entire balance
+    },
+    {
+      payer: wallet.publicKey,
+      userTransferAuthority: wallet.publicKey,
+      vault,
+    }
+  );
+
+  instructions.push(requestWithdrawIx);
+
+  return instructions;
+};
+```
+
+#### 3. Phase 2: Claim Withdrawal (After Waiting Period)
+
+```typescript
+const handleClaimWithdraw = async () => {
+  const instructions: TransactionInstruction[] = [];
+
   // Create user's asset token account
   const userAssetAta = getAssociatedTokenAddressSync(
     vaultAssetMint,
     wallet.publicKey
   );
-  
+
   instructions.push(
     createAssociatedTokenAccountIdempotentInstruction(
       wallet.publicKey,
@@ -206,20 +239,17 @@ const handleWithdraw = async (amount: string) => {
       vaultAssetMint
     )
   );
-  
-  // Create withdraw instruction
-  const withdrawIx = await client.createWithdrawVaultIx(
-    withdrawAmount,
-    {
-      vault,
-      userAuthority: wallet.publicKey,
-      vaultAssetMint,
-      assetTokenProgram,
-    }
-  );
-  
+
+  // Create withdraw instruction (claim phase)
+  const withdrawIx = await client.createWithdrawVaultIx({
+    userTransferAuthority: wallet.publicKey,
+    vault,
+    vaultAssetMint,
+    assetTokenProgram,
+  });
+
   instructions.push(withdrawIx);
-  
+
   // For SOL withdrawals, handle unwrapping
   if (vaultAssetMint.equals(NATIVE_MINT)) {
     instructions.push(
@@ -231,12 +261,47 @@ const handleWithdraw = async (amount: string) => {
       )
     );
   }
-  
+
   return instructions;
 };
 ```
 
-#### 3. Create Withdrawal UI
+#### 4. Cancel Pending Withdrawal (Optional)
+
+```typescript
+const handleCancelWithdraw = async () => {
+  const cancelIx = await client.createCancelRequestWithdrawVaultIx({
+    userTransferAuthority: wallet.publicKey,
+    vault,
+  });
+
+  return [cancelIx];
+};
+```
+
+#### 5. Check Pending Withdrawal Status
+
+```typescript
+const checkPendingWithdrawal = async () => {
+  try {
+    const pendingWithdrawal = await client.getPendingWithdrawalForUser(
+      vault,
+      wallet.publicKey
+    );
+
+    return {
+      amountToWithdraw: pendingWithdrawal.amountAssetToWithdrawEffective,
+      withdrawableFromTs: pendingWithdrawal.withdrawableFromTs,
+      isReady: Date.now() / 1000 >= pendingWithdrawal.withdrawableFromTs,
+    };
+  } catch (error) {
+    // No pending withdrawal
+    return null;
+  }
+};
+```
+
+#### 6. Create Withdrawal UI
 
 ```tsx
 return (
@@ -251,24 +316,25 @@ return (
       onClick={async () => {
         try {
           setLoading(true);
-          const instructions = await handleWithdraw(amount);
-          
+          const instructions = await handleRequestWithdraw(amount);
+
           // Send transaction
-          const { blockhash } = await connection.getLatestBlockhash();
+          const { blockhash, lastValidBlockHeight } =
+            await connection.getLatestBlockhash();
           const transaction = new Transaction({
             feePayer: wallet.publicKey,
             blockhash,
-            lastValidBlockHeight: lastValidBlockHeight,
+            lastValidBlockHeight,
           }).add(...instructions);
-          
+
           const signed = await wallet.signTransaction(transaction);
           const txId = await connection.sendRawTransaction(
             signed.serialize()
           );
-          
+
           await connection.confirmTransaction(txId);
-          
-          // Handle success
+
+          // Handle success - inform user about waiting period
         } catch (error) {
           // Handle error
         } finally {
@@ -277,10 +343,71 @@ return (
       }}
       disabled={loading}
     >
-      {loading ? 'Processing...' : 'Withdraw'}
+      {loading ? 'Processing...' : 'Request Withdraw'}
+    </button>
+
+    {/* Claim button for when waiting period is over */}
+    <button
+      onClick={async () => {
+        try {
+          setLoading(true);
+          const instructions = await handleClaimWithdraw();
+          // ... send transaction
+        } catch (error) {
+          // Handle error
+        } finally {
+          setLoading(false);
+        }
+      }}
+      disabled={loading}
+    >
+      {loading ? 'Processing...' : 'Claim Withdrawal'}
     </button>
   </div>
 );
+```
+
+### Direct Withdrawal (For Enabled Strategies)
+
+Some vaults may enable direct withdrawal from strategies, allowing users to bypass the two-phase withdrawal for specific strategies:
+
+```typescript
+const handleDirectWithdraw = async () => {
+  const instructions: TransactionInstruction[] = [];
+
+  // Create user's asset token account
+  const userAssetAta = getAssociatedTokenAddressSync(
+    vaultAssetMint,
+    wallet.publicKey
+  );
+
+  instructions.push(
+    createAssociatedTokenAccountIdempotentInstruction(
+      wallet.publicKey,
+      userAssetAta,
+      wallet.publicKey,
+      vaultAssetMint
+    )
+  );
+
+  const directWithdrawIx = await client.createDirectWithdrawStrategyIx(
+    { userArgs: null },
+    {
+      user: wallet.publicKey,
+      vault,
+      strategy,
+      vaultAssetMint,
+      assetTokenProgram,
+      remainingAccounts: [
+        // Protocol-specific accounts required for direct withdrawal
+      ],
+    }
+  );
+
+  instructions.push(directWithdrawIx);
+
+  return instructions;
+};
 ```
 
 ### Important Considerations

@@ -17,21 +17,25 @@ import {
   PublicKey,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
-import { BN } from "@coral-xyz/anchor";
+import fs from "fs";
 ```
 
 ### Step-by-Step Guide
 
-#### 1. Prepare Vault Configuations
+#### 1. Prepare Vault Configurations
 
 ```typescript
 const vaultConfig: VaultConfig = {
-  maxCap: new BN(0),            // Maximum vault capacity
-  startAtTs: new BN(0),         // Start timestamp
-  managerPerformanceFee: 1000,  // 10% in basis points
-  adminPerformanceFee: 500,     // 5% in basis points
-  managerManagementFee: 50,     // 0.5% in basis points
-  adminManagementFee: 25,       // 0.25% in basis points
+  maxCap: new BN(0),                              // Maximum vault capacity (0 = unlimited)
+  startAtTs: new BN(0),                           // Activation timestamp (0 = immediate)
+  lockedProfitDegradationDuration: new BN(86400), // 24 hours in seconds
+  managerPerformanceFee: 1000,                    // 10% in basis points
+  adminPerformanceFee: 500,                       // 5% in basis points
+  managerManagementFee: 50,                       // 0.5% in basis points
+  adminManagementFee: 25,                         // 0.25% in basis points
+  redemptionFee: 10,                              // 0.1% in basis points
+  issuanceFee: 10,                                // 0.1% in basis points
+  withdrawalWaitingPeriod: new BN(0),             // Waiting period in seconds (0 = immediate)
 };
 
 const vaultParams: VaultParams = {
@@ -110,14 +114,31 @@ interface Vault {
     idleAuth: PublicKey;  // Idle token authority
     totalValue: BN;       // Total assets in vault
   };
-  config: {
-    maxCap: BN;                  // Maximum vault capacity
-    startAtTs: BN;               // Start timestamp
-    managerPerformanceFee: number; // In basis points
-    adminPerformanceFee: number;   // In basis points
-    managerManagementFee: number;  // In basis points
-    adminManagementFee: number;    // In basis points
+  vaultConfiguration: {
+    maxCap: BN;                              // Maximum vault capacity
+    startAtTs: BN;                           // Start timestamp
+    lockedProfitDegradationDuration: BN;     // Locked profit degradation duration
+    withdrawalWaitingPeriod: BN;             // Withdrawal waiting period
   };
+  feeConfiguration: {
+    managerPerformanceFee: number;           // In basis points
+    adminPerformanceFee: number;             // In basis points
+    managerManagementFee: number;            // In basis points
+    adminManagementFee: number;              // In basis points
+    redemptionFee: number;                   // In basis points
+    issuanceFee: number;                     // In basis points
+  };
+  feeState: {
+    accumulatedLpAdminFees: BN;              // Accumulated LP admin fees
+    accumulatedLpManagerFees: BN;            // Accumulated LP manager fees
+    accumulatedLpProtocolFees: BN;           // Accumulated LP protocol fees
+  };
+  highWaterMark: {
+    highestAssetPerLpDecimalBits: BN;        // Highest asset per LP (decimal bits)
+    lastUpdatedTs: BN;                       // Last updated timestamp
+  };
+  admin: PublicKey;       // Vault admin authority
+  manager: PublicKey;     // Vault manager authority
 }
 ```
 

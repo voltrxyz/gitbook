@@ -10,7 +10,7 @@ First, import the required dependencies:
 
 ```typescript
 import { Connection, Keypair, PublicKey, TransactionInstruction } from "@solana/web3.js";
-import { VoltrClient, DEFAULT_ADAPTOR_PROGRAM_ID, SEEDS } from "@voltr/vault-sdk";
+import { VoltrClient, LENDING_ADAPTOR_PROGRAM_ID, SEEDS } from "@voltr/vault-sdk";
 import { BN } from "@coral-xyz/anchor";
 import {
   createAssociatedTokenAccountInstruction,
@@ -18,6 +18,7 @@ import {
   getAccount,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
+import fs from "fs";
 ```
 
 Initialize the client and configuration:
@@ -47,7 +48,7 @@ const vaultAssetMint = new PublicKey("your-asset-mint");
 // Get strategy PDA
 const [strategy] = PublicKey.findProgramAddressSync(
   [SEEDS.STRATEGY, counterPartyTa.toBuffer()],
-  DEFAULT_ADAPTOR_PROGRAM_ID
+  LENDING_ADAPTOR_PROGRAM_ID
 );
 
 // Get vault strategy authority
