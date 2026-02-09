@@ -13,6 +13,7 @@ After creating a vault, the **admin** can update various configuration parameter
 | Management fees (admin/manager) | Yes | Admin |
 | Issuance fee | Yes | Admin |
 | Redemption fee | Yes | Admin |
+| Manager | Yes | Admin |
 | Vault name | No | — |
 | Vault description | No | — |
 | Asset mint | No | — |
@@ -33,11 +34,11 @@ Connect with the **admin wallet** and use the configuration update form.
 
 ## Update via SDK
 
-Use `createUpdateVaultConfigIx` to update vault configuration programmatically:
+The `createUpdateVaultConfigIx` method updates **one field at a time**. You specify which field to update using the `VaultConfigField` enum and provide the serialized value as a `Buffer`.
 
 ```typescript
 import { BN } from "@coral-xyz/anchor";
-import { VoltrClient } from "@voltr/vault-sdk";
+import { VoltrClient, VaultConfigField } from "@voltr/vault-sdk";
 import {
   Connection,
   Keypair,
@@ -55,62 +56,95 @@ const adminKp = Keypair.fromSecretKey(
 );
 
 const vault = new PublicKey("your-vault-pubkey");
+```
 
-// Update configuration
-const updateConfigIx = await client.createUpdateVaultConfigIx(
-  {
-    newConfig: {
-      maxCap: new BN("18446744073709551615"), // Update max cap to uncapped
-      startAtTs: null,                         // null = don't change
-      lockedProfitDegradationDuration: null,   // null = don't change
-      managerPerformanceFee: 1500,             // Update to 15%
-      adminPerformanceFee: null,               // null = don't change
-      managerManagementFee: null,
-      adminManagementFee: null,
-      redemptionFee: null,
-      issuanceFee: null,
-      withdrawalWaitingPeriod: null,
-    },
-  },
+### Update Max Cap (u64 field)
+
+```typescript
+const newMaxCap = new BN("18446744073709551615"); // Uncapped (u64 max)
+const data = newMaxCap.toArrayLike(Buffer, "le", 8);
+
+const updateMaxCapIx = await client.createUpdateVaultConfigIx(
+  VaultConfigField.MaxCap,
+  data,
   {
     vault,
     admin: adminKp.publicKey,
   }
 );
 
-const txSig = await sendAndConfirmTransaction(
-  [updateConfigIx],
-  connection,
-  [adminKp]
+await sendAndConfirmTransaction([updateMaxCapIx], connection, [adminKp]);
+```
+
+### Update a Fee (u16 field)
+
+```typescript
+const newFee = 1500; // 15% in basis points
+const feeData = Buffer.alloc(2);
+feeData.writeUInt16LE(newFee, 0);
+
+const updateFeeIx = await client.createUpdateVaultConfigIx(
+  VaultConfigField.ManagerPerformanceFee,
+  feeData,
+  {
+    vault,
+    admin: adminKp.publicKey,
+  }
 );
 
-console.log("Config updated:", txSig);
+await sendAndConfirmTransaction([updateFeeIx], connection, [adminKp]);
 ```
 
 {% hint style="warning" %}
-Pass `null` for any field you don't want to change. Only non-null fields will be updated.
-{% endhint %}
-
-## Changing Admin or Manager
-
-To transfer the admin or manager role to a different keypair:
+**Management fee updates** require passing `vaultLpMint` in the accounts object:
 
 ```typescript
-// Transfer admin role
-const updateAdminIx = await client.createUpdateVaultAdminIx({
-  vault,
-  admin: currentAdminKp.publicKey,
-  newAdmin: newAdminPubkey,
-});
+const updateMgmtFeeIx = await client.createUpdateVaultConfigIx(
+  VaultConfigField.ManagerManagementFee,
+  feeData,
+  {
+    vault,
+    admin: adminKp.publicKey,
+    vaultLpMint: client.findVaultLpMint(vault),
+  }
+);
+```
+{% endhint %}
 
-// Transfer manager role
-const updateManagerIx = await client.createUpdateVaultManagerIx({
-  vault,
-  admin: adminKp.publicKey,
-  newManager: newManagerPubkey,
-});
+### Update Manager (PublicKey field)
+
+```typescript
+const newManager = new PublicKey("new-manager-pubkey");
+const managerData = newManager.toBuffer();
+
+const updateManagerIx = await client.createUpdateVaultConfigIx(
+  VaultConfigField.Manager,
+  managerData,
+  {
+    vault,
+    admin: adminKp.publicKey,
+  }
+);
+
+await sendAndConfirmTransaction([updateManagerIx], connection, [adminKp]);
 ```
 
+## VaultConfigField Reference
+
+| Field | Data Type | Serialization |
+|-------|----------|---------------|
+| `MaxCap` | u64 | `new BN(value).toArrayLike(Buffer, "le", 8)` |
+| `StartAtTs` | u64 | `new BN(value).toArrayLike(Buffer, "le", 8)` |
+| `LockedProfitDegradationDuration` | u64 | `new BN(value).toArrayLike(Buffer, "le", 8)` |
+| `WithdrawalWaitingPeriod` | u64 | `new BN(value).toArrayLike(Buffer, "le", 8)` |
+| `ManagerPerformanceFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `AdminPerformanceFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `ManagerManagementFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `AdminManagementFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `RedemptionFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `IssuanceFee` | u16 | `Buffer.alloc(2); buf.writeUInt16LE(value, 0)` |
+| `Manager` | PublicKey | `new PublicKey("...").toBuffer()` |
+
 {% hint style="danger" %}
-**Be extremely careful** when transferring admin or manager roles. Once transferred, the old keypair loses all authority. There is no way to reverse this without the new keypair holder's cooperation.
+**Be extremely careful** when updating the Manager field. Once transferred, the old keypair loses all manager authority. There is no way to reverse this without the new keypair holder's cooperation.
 {% endhint %}
