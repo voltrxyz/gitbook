@@ -27,3 +27,8 @@ Adaptors are specialized components, plugged into vaults by vault owners, that h
 ```
 Vault <-> Adaptor <-> External Protocol
 ```
+
+### Integration Paths
+
+* **Building a new adaptor?** See the [Adaptor Creation Guide](adaptor-creation-guide/) for implementing protocol-specific deposit, withdraw, and strategy logic.
+* **Integrating with existing vaults via CPI?** See the [CPI Integration Guide](cpi-integration-guide/) for on-chain deposit and withdrawal instructions.

@@ -49,6 +49,10 @@
   * [Core Components Implementation](for-defi-protocols/adaptor-creation-guide/core-components-implementation.md)
   * [Security Considerations](for-defi-protocols/adaptor-creation-guide/security-considerations.md)
   * [Dummy Implementation](for-defi-protocols/adaptor-creation-guide/example-implementations.md)
+* [CPI Integration Guide](for-defi-protocols/cpi-integration-guide/README.md)
+  * [Deposit](for-defi-protocols/cpi-integration-guide/deposit.md)
+  * [Request Withdraw](for-defi-protocols/cpi-integration-guide/request-withdraw.md)
+  * [Withdraw](for-defi-protocols/cpi-integration-guide/withdraw.md)
 
 ## For Developers
 
