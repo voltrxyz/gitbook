@@ -3,7 +3,7 @@
 This guide walks through creating and initializing a new vault using the Voltr SDK.
 
 {% hint style="info" %}
-**Prefer the UI?** You can create a vault without code at [vaults.ranger.finance/create](https://vaults.ranger.finance/create). See [Quick Start (UI)](../getting-started/quick-start-ui.md).
+**Prefer the UI?** You can create a vault without code at [vaults.ranger.finance/create](https://vaults.ranger.finance/create). See [Quick Start (UI)](../quick-start-ui.md).
 {% endhint %}
 
 ## Setup
@@ -157,9 +157,10 @@ interface Vault {
 
 {% hint style="warning" %}
 **Your vault won't generate yield yet.** After creation, deposited funds sit idle in the vault's token account. You must:
+
 1. [Set up LP token metadata](vault-token-metadata.md) so wallets display your token correctly
-2. [Initialize strategies](../strategy-setup-guide/README.md) to connect to DeFi protocols
-3. [Allocate funds](../fund-allocation-guide/README.md) to move idle funds into strategies
+2. [Initialize strategies](../../strategy-setup-guide.md) to connect to DeFi protocols
+3. [Allocate funds](../../fund-allocation-guide/) to move idle funds into strategies
 {% endhint %}
 
 ## Important Considerations
@@ -192,4 +193,4 @@ Common error scenarios and solutions:
    * Handle RPC timeouts
    * Implement proper retry logic
 
-For additional support or questions, refer to the [Voltr SDK documentation](https://voltrxyz.github.io/vault-sdk/) or [example scripts](https://github.com/voltrxyz/client-scripts).
+For additional support or questions, refer to the [Voltr SDK documentation](https://voltrxyz.github.io/vault-sdk/) or [example scripts](https://github.com/voltrxyz/base-scripts).

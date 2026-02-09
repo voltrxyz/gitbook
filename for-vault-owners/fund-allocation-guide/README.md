@@ -2,10 +2,6 @@
 
 This guide explains how vault managers allocate funds between the vault's idle account and initialized strategies.
 
-{% hint style="info" %}
-**SDK for manager actions, API for user actions**: Use the SDK with server-side scripts for fund allocation (requires the manager keypair). Use the [Voltr API](https://api.voltr.xyz/docs) for reading vault data and user-facing queries.
-{% endhint %}
-
 ## Overview
 
 As a vault manager, you have the authority to:
@@ -13,7 +9,6 @@ As a vault manager, you have the authority to:
 * Deploy idle funds from the vault into active strategies
 * Withdraw funds from strategies back to the vault
 * Monitor current allocations and performance
-* Claim protocol rewards
 
 ## Key Concepts
 
@@ -37,13 +32,13 @@ Keep some funds idle to service user withdrawals. If all funds are deployed, use
 ## Section Contents
 
 {% content-ref url="prerequisites.md" %}
-[Prerequisites](prerequisites.md)
+[prerequisites.md](prerequisites.md)
 {% endcontent-ref %}
 
 {% content-ref url="fund-allocation.md" %}
-[Fund Allocation](fund-allocation.md)
+[fund-allocation.md](fund-allocation.md)
 {% endcontent-ref %}
 
-{% content-ref url="rewards-and-emissions.md" %}
-[Rewards & Emissions](rewards-and-emissions.md)
+{% content-ref url="/broken/pages/7jOHVADD3CS503Xy2th6" %}
+[Broken link](/broken/pages/7jOHVADD3CS503Xy2th6)
 {% endcontent-ref %}

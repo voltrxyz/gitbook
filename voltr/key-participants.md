@@ -27,8 +27,8 @@ Vault owners are responsible for the overall vault configuration and security:
 [vault-initialization-guide](../for-vault-owners/vault-initialization-guide/)
 {% endcontent-ref %}
 
-{% content-ref url="../for-vault-owners/frontend-integration-guide/" %}
-[frontend-integration-guide](../for-vault-owners/frontend-integration-guide/)
+{% content-ref url="../for-vault-owners/frontend-integration-guide.md" %}
+[frontend-integration-guide.md](../for-vault-owners/frontend-integration-guide.md)
 {% endcontent-ref %}
 
 ## Vault Managers

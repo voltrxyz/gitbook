@@ -1,6 +1,6 @@
 # Fees & Accounting
 
-Fee parameters are configured at vault creation and can be **updated by the admin** at any time. See [Vault Configuration Updates](vault-initialization-guide/vault-configuration-updates.md) for how to modify fees after creation.
+Fee parameters are configured at vault creation and can be **updated by the admin** at any time. See [Vault Configuration Updates](vault-initialization-guide/prerequisites/vault-configuration-updates.md) for how to modify fees after creation.
 
 When the vault realizes a profit, that profit increases the overall asset value. However, not all of this profit is immediately available for fee collection. A portion is "locked" and gradually becomes available (or "unlocked") over time. Fees are only charged on new profits that exceed a historical peak—this is known as the **high water mark**.
 
@@ -13,8 +13,6 @@ To prevent sandwich-ing or frontrunning on gains, newly realized profit is initi
 $$
 \text{Locked Profit} = \left(\frac{\text{Degradation Duration} - \text{Time Elapsed}}{\text{Degradation Duration}}\right) \times \text{Previous Locked Profit}
 $$
-
-
 
 Once the degradation period has passed, the locked profit becomes zero.
 
@@ -155,15 +153,3 @@ console.log("Unrealised fees:", lpBreakdown.unrealisedFees.toString());
 console.log("Total LP:", lpBreakdown.total.toString());
 ```
 
-***
-
-### Summary
-
-* **Profit Handling:** Profits are added to the total asset value, but a portion remains locked and degrades over time.
-* **High Water Mark:** Only profits that exceed the historical peak (high water mark) are subject to performance fees.
-* **Fee Calculation:** Fees are calculated as a percentage of the eligible profit and then minted as new LP tokens.
-* **Fee Splitting:** Performance and management fees are divided between admin and manager according to predefined shares.
-* **Issuance Fee:** Optional fee on deposits, reduces LP tokens minted.
-* **Redemption Fee:** Optional fee on withdrawals, reduces assets returned.
-
-This approach ensures that fees are only taken on genuine, new gains while protecting investor interests by avoiding fees on previously earned or unrealized profit.

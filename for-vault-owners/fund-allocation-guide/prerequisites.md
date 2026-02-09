@@ -7,7 +7,7 @@ Before allocating vault funds, ensure you have:
 You need the **manager** keypair for your vault. The manager pays for fund allocation transaction fees.
 
 {% hint style="info" %}
-The **manager** pays gas fees for allocation transactions. Additionally, the manager pays rent for any Associated Token Accounts (ATAs) that need to be created during allocation. See [Gas Fees & ATA Costs](../vault-operations/gas-fees-and-ata-costs.md) for detailed cost breakdowns.
+The **manager** pays gas fees for allocation transactions. Additionally, the manager pays rent for any Associated Token Accounts (ATAs) that need to be created during allocation. See [Gas Fees & ATA Costs](/broken/pages/U6iBbWz0O1yu70lcZW1C) for detailed cost breakdowns.
 {% endhint %}
 
 ## 2. Solana RPC Endpoint
@@ -20,7 +20,7 @@ You must be the designated manager of the vault. Verify by checking the vault's 
 
 ## 4. Initialized Strategies
 
-Funds can only be allocated to **already initialized** strategies. If you haven't set up strategies yet, see [Strategy Setup Guide](../strategy-setup-guide/README.md).
+Funds can only be allocated to **already initialized** strategies. If you haven't set up strategies yet, see [Strategy Setup Guide](../strategy-setup-guide.md).
 
 ## 5. SDK & Dependencies
 

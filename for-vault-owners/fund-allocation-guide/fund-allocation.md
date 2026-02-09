@@ -39,6 +39,10 @@ const vaultAssetMint = new PublicKey("your-asset-mint");
 
 ## Depositing Funds to Strategies
 
+Accounts required for deposit is protocol-specific. Each protocol requires different accounts and configuration. Use the protocol-specific scripts from the Voltr team:
+
+<table><thead><tr><th width="308.1162109375">Protocol / Adaptor</th><th>Deposit Scripts</th></tr></thead><tbody><tr><td>Kamino Adaptor</td><td><a href="https://github.com/voltrxyz/kamino-scripts/blob/main/src/scripts/manager-initialize-kvault.ts">Kamino Vault</a>, <a href="https://github.com/voltrxyz/kamino-scripts/blob/main/src/scripts/manager-deposit-market.ts">Kamino Lending Market</a></td></tr><tr><td>Drift Adaptor</td><td><a href="https://github.com/voltrxyz/drift-scripts/blob/main/src/scripts/manager-init-earn.ts">Drift Lend</a>, <a href="https://github.com/voltrxyz/drift-scripts/blob/main/src/scripts/manager-init-user.ts">Drift Perps</a></td></tr><tr><td>Jupiter Adaptor</td><td><a href="https://github.com/voltrxyz/spot-scripts/blob/main/src/scripts/manager-buy-spot.ts">Spot via Jupiter Swap</a>, <a href="https://github.com/voltrxyz/spot-scripts/blob/main/src/scripts/manager-initialize-earn.ts">Jupiter Lend</a></td></tr><tr><td>Trustful Adaptor</td><td><a href="https://github.com/voltrxyz/trustful-scripts/blob/main/src/scripts/manager-deposit-arbitrary.ts">Centralised Exchanges</a></td></tr></tbody></table>
+
 ### 1. Account Setup
 
 ```typescript
@@ -77,7 +81,7 @@ try {
 ```
 
 {% hint style="info" %}
-**ATA behavior**: ATAs created for strategy operations are **not closed** between deposit/withdraw cycles. The rent cost (~0.002 SOL per ATA) is a one-time cost paid by the manager. See [Gas Fees & ATA Costs](../vault-operations/gas-fees-and-ata-costs.md) for details.
+**ATA behavior**: ATAs created for strategy operations are **not closed** between deposit/withdraw cycles. The rent cost (\~0.002 SOL per ATA) is a one-time cost paid by the manager. See [Gas Fees & ATA Costs](/broken/pages/U6iBbWz0O1yu70lcZW1C) for details.
 {% endhint %}
 
 ### 2. Create Deposit Instruction
@@ -115,6 +119,10 @@ const txSig = await sendAndConfirmOptimisedTx(
 ```
 
 ## Withdrawing Funds from Strategies
+
+Accounts required for withdraw is protocol-specific. Each protocol requires different accounts and configuration. Use the protocol-specific scripts from the Voltr team:
+
+<table><thead><tr><th width="308.1162109375">Protocol / Adaptor</th><th>Withdraw Scripts</th></tr></thead><tbody><tr><td>Kamino Adaptor</td><td><a href="https://github.com/voltrxyz/kamino-scripts/blob/main/src/scripts/manager-withdraw-kvault.ts">Kamino Vault</a>, <a href="https://github.com/voltrxyz/kamino-scripts/blob/main/src/scripts/manager-deposit-market.ts">Kamino Lending Market</a></td></tr><tr><td>Drift Adaptor</td><td><a href="https://github.com/voltrxyz/drift-scripts/blob/main/src/scripts/manager-init-earn.ts">Drift Lend</a>, <a href="https://github.com/voltrxyz/drift-scripts/blob/main/src/scripts/manager-init-user.ts">Drift Perps</a></td></tr><tr><td>Jupiter Adaptor</td><td><a href="https://github.com/voltrxyz/spot-scripts/blob/main/src/scripts/manager-buy-spot.ts">Spot via Jupiter Swap</a>, <a href="https://github.com/voltrxyz/spot-scripts/blob/main/src/scripts/manager-initialize-earn.ts">Jupiter Lend</a></td></tr><tr><td>Trustful Adaptor</td><td><a href="https://github.com/voltrxyz/trustful-scripts/blob/main/src/scripts/manager-deposit-arbitrary.ts">Centralised Exchanges</a></td></tr></tbody></table>
 
 ### 1. Account Setup
 
@@ -177,30 +185,6 @@ const txSig = await sendAndConfirmOptimisedTx(
 );
 ```
 
-## Required Account Structure
-
-### Core Accounts
-
-| Account | Description |
-|---------|-----------|
-| `manager` | Vault manager authority (signer) |
-| `vault` | The vault public key |
-| `vaultAssetMint` | The vault's asset token mint |
-| `strategy` | Target strategy PDA |
-| `assetTokenProgram` | Token program ID |
-
-### Associated Token Accounts
-
-| Account | Description |
-|---------|-----------|
-| `vaultStrategyAssetAta` | Strategy's asset ATA (via vault strategy authority) |
-| `counterPartyTa` | Protocol's token account (receives deposits) |
-| `counterPartyTaAuth` | Protocol's token account authority (for withdrawals) |
-
-### Protocol-Specific Accounts
-
-Each protocol requires additional accounts (oracle accounts, market accounts, state accounts, etc.). Refer to the protocol-specific script repositories for the complete list.
-
 ## Best Practices
 
 * **Keep idle reserves**: Don't deploy 100% of funds — leave a buffer for user withdrawals
@@ -210,11 +194,11 @@ Each protocol requires additional accounts (oracle accounts, market accounts, st
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|---------|
-| Transaction too large | Use [Lookup Tables](../strategy-setup-guide/lookup-tables.md) |
-| Insufficient funds | Check idle balance, ensure enough SOL for gas |
-| Authority error | Verify manager keypair matches vault's manager |
-| ATA not found | Create the ATA before the allocation instruction |
+| Issue                 | Solution                                         |
+| --------------------- | ------------------------------------------------ |
+| Transaction too large | Use Lookup Tables                                |
+| Insufficient funds    | Check idle balance, ensure enough SOL for gas    |
+| Authority error       | Verify manager keypair matches vault's manager   |
+| ATA not found         | Create the ATA before the allocation instruction |
 
-For additional support, refer to the [Voltr SDK documentation](https://voltrxyz.github.io/vault-sdk/) or [example scripts](https://github.com/voltrxyz/client-scripts).
+For additional support, refer to the [Voltr SDK documentation](https://voltrxyz.github.io/vault-sdk/).

@@ -6,7 +6,7 @@ When users deposit into your vault, they receive LP tokens. By default, these to
 
 * Wallets (Phantom, Solflare, etc.) display the token name, symbol, and image
 * Jupiter and other aggregators use metadata for token identification
-* Required for [token verification on Jupiter](../go-to-market/token-verification.md)
+* Required for [token verification on Jupiter](../../go-to-market/token-verification.md)
 
 ## Metadata JSON Format
 
@@ -23,17 +23,17 @@ Host a JSON file with the following structure at a publicly accessible URL:
 
 ### Hosting Options
 
-| Option | Pros | Cons |
-|--------|------|------|
-| **GitHub repository** | Free, version controlled, reliable | Public repo required |
-| **Arweave/IPFS** | Permanent, decentralized | Small cost, immutable (can't update) |
-| **Your own domain** | Full control | Requires hosting |
+| Option                | Pros                               | Cons                                 |
+| --------------------- | ---------------------------------- | ------------------------------------ |
+| **GitHub repository** | Free, version controlled, reliable | Public repo required                 |
+| **Arweave/IPFS**      | Permanent, decentralized           | Small cost, immutable (can't update) |
+| **Your own domain**   | Full control                       | Requires hosting                     |
 
 {% hint style="info" %}
 **Recommended**: Host your metadata JSON and logo image in a GitHub repository. See [github.com/ranger-finance/assets](https://github.com/ranger-finance/assets) for an example of how to structure your assets.
 {% endhint %}
 
-## Create Metadata via SDK
+## Create or Update Metadata via SDK
 
 Use the `createCreateLpMetadataIx` instruction to attach metadata to your vault's LP token:
 
@@ -85,33 +85,9 @@ console.log("Metadata created:", txSig);
 Only the **admin** can create or update LP token metadata.
 {% endhint %}
 
-## Update Existing Metadata
-
-If you need to change the metadata after initial creation (e.g., update the logo or description), use `createUpdateLpMetadataIx`:
-
-```typescript
-const updateMetadataIx = await client.createUpdateLpMetadataIx(
-  {
-    name: "Updated Vault LP",
-    symbol: "uvLP",
-    uri: "https://your-domain.com/updated-metadata.json",
-  },
-  {
-    vault,
-    admin: adminKp.publicKey,
-  }
-);
-
-const txSig = await sendAndConfirmTransaction(
-  [updateMetadataIx],
-  connection,
-  [adminKp]
-);
-```
-
 ## Next Steps
 
 After setting up metadata:
 
-1. [Initialize strategies](../strategy-setup-guide/README.md) to connect your vault to DeFi protocols
-2. Consider [verifying your token on Jupiter](../go-to-market/token-verification.md) to avoid wallet warnings
+1. [Initialize strategies](../../strategy-setup-guide.md) to connect your vault to DeFi protocols
+2. Consider [verifying your token on Jupiter](../../go-to-market/token-verification.md) to avoid wallet warnings

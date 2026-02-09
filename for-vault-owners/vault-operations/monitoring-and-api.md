@@ -1,5 +1,9 @@
 # Monitoring & API
 
+{% hint style="info" %}
+API services are only available for indexed vaults. Please reach out to the team to get your vault enabled.
+{% endhint %}
+
 Monitor your vault's performance and health using the Voltr API and SDK.
 
 ## Voltr API
@@ -9,25 +13,6 @@ The Voltr API provides read-only endpoints for querying vault data. This is the 
 **Base URL**: `https://api.voltr.xyz`
 
 **Full documentation**: [api.voltr.xyz/docs](https://api.voltr.xyz/docs)
-
-### Key Endpoints
-
-| Endpoint | Description |
-|----------|-----------|
-| `GET /vaults` | List all vaults with summary data |
-| `GET /vault/{address}` | Get detailed vault information |
-| `GET /vault/{address}/apy` | Get vault APY data |
-| `GET /vault/{address}/share-price` | Get current share price |
-
-### Example: Query Vault Data
-
-```bash
-# Get vault details
-curl https://api.voltr.xyz/vault/YOUR_VAULT_ADDRESS
-
-# Get vault APY
-curl https://api.voltr.xyz/vault/YOUR_VAULT_ADDRESS/apy
-```
 
 ## SDK Query Methods
 
@@ -88,13 +73,13 @@ console.log("Total LP:", lpBreakdown.total.toString());
 **API for reads, SDK for writes**: Use the Voltr API for monitoring, dashboards, and user-facing queries. Use the SDK for manager/admin operations that require signing transactions.
 {% endhint %}
 
-| Use Case | Recommended |
-|----------|-------------|
-| Dashboard / UI showing vault data | Voltr API |
-| Monitoring vault APY over time | Voltr API |
-| Checking fees before harvesting | SDK (real-time) |
-| Automation scripts (rebalancing) | SDK |
-| User deposit/withdraw UI | Voltr API + SDK |
+| Use Case                          | Recommended     |
+| --------------------------------- | --------------- |
+| Dashboard / UI showing vault data | Voltr API       |
+| Monitoring vault APY over time    | Voltr API       |
+| User deposit/withdraw UI          | Voltr API       |
+| Checking fees before harvesting   | SDK (real-time) |
+| Automation scripts (rebalancing)  | SDK             |
 
 ## What to Monitor
 

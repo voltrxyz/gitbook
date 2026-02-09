@@ -1,4 +1,4 @@
-# Prerequisites
+# Via Typescript SDK
 
 Before creating a vault, ensure you have the following:
 
@@ -22,10 +22,10 @@ A reliable Solana RPC endpoint is required for all on-chain operations. Recommen
 
 Voltr enforces role separation between admin and manager:
 
-| Role | Responsibilities |
-|------|-----------------|
-| **Admin** | Add/remove adaptors, initialize strategies, update vault config, calibrate high water mark |
-| **Manager** | Allocate funds between strategies, claim protocol rewards |
+| Role        | Responsibilities                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------ |
+| **Admin**   | Add/remove adaptors, initialize strategies, update vault config, calibrate high water mark |
+| **Manager** | Allocate funds between strategies, claim protocol rewards                                  |
 
 {% hint style="warning" %}
 **Use separate keypairs** for admin and manager. This limits the blast radius if one key is compromised. The admin controls vault structure; the manager controls fund movement.
@@ -48,5 +48,5 @@ Explore SDK documentation:
 Know the mint address of the SPL token your vault will accept (e.g., USDC: `EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v`).
 
 {% hint style="info" %}
-You can also create a vault via the UI at [vaults.ranger.finance/create](https://vaults.ranger.finance/create) without installing the SDK. See [Quick Start (UI)](../getting-started/quick-start-ui.md).
+You can also create a vault via the UI at [vaults.ranger.finance/create](https://vaults.ranger.finance/create) without installing the SDK. See [Quick Start (UI)](../quick-start-ui.md).
 {% endhint %}

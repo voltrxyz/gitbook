@@ -1,45 +1,33 @@
 # Vault Initialization Guide
 
-This guide covers the complete process of initializing a vault on the Voltr protocol — from prerequisites through creation, metadata setup, and configuration.
+This guide helps you get from zero to a fully operational vault. There are two paths depending on your needs.
+
+## Choose Your Path
+
+|                             | UI Path                                                       | SDK Path        |
+| --------------------------- | ------------------------------------------------------------- | --------------- |
+| **Best for**                | MPC Wallets requiring browser experience (admin actions only) | Everything else |
+| **Vault creation**          | Yes                                                           | Yes             |
+| **Config updates**          | Yes                                                           | Yes             |
+| **Metadata setup**          | Yes                                                           | Yes             |
+| **Strategy initialization** | No — requires scripts                                         | Yes             |
+| **Fund allocation**         | No — requires scripts                                         | Yes             |
 
 {% hint style="info" %}
-Each vault supports **one asset only** (e.g., USDC, SOL). If you need to manage multiple assets, create separate vaults.
+**Recommendation**: Use the **UI** for vault creation and config management, then use the **SDK + protocol-specific scripts** for strategy initialization and fund allocation. Most vault owners use both.
 {% endhint %}
 
-## What Happens During Initialization
+## Common Prerequisites
 
-When you create a vault, the protocol:
+Regardless of which path you choose, you'll need:
 
-1. Creates the vault account on-chain with your specified configuration
-2. Sets up the idle token account (where undeployed funds sit)
-3. Creates the LP token mint (users receive LP tokens when they deposit)
-4. Assigns admin and manager roles to the keypairs you specify
+1. **A Solana wallet** with sufficient SOL (\~0.15 SOL for vault creation + ongoing transaction fees)
+2. **An RPC endpoint** — a reliable Solana RPC provider (e.g., Helius, Triton, QuickNode)
+3. **Admin and manager keypairs** — two separate Solana keypairs for role separation
+4. **A clear plan for your vault** — which asset, which strategies, target fees
 
-After initialization, your vault exists but has **no strategies** — funds deposited will sit idle until you complete the [Strategy Setup Guide](../strategy-setup-guide/README.md).
+## Next Steps
 
-## Initialization Steps
-
-| Step | Page | Required |
-|------|------|----------|
-| 1. Review requirements | [Prerequisites](prerequisites.md) | Yes |
-| 2. Create the vault | [Vault Creation](vault-creation.md) | Yes |
-| 3. Set up LP token metadata | [Vault Token Metadata](vault-token-metadata.md) | Recommended |
-| 4. Update configuration (if needed) | [Vault Configuration Updates](vault-configuration-updates.md) | Optional |
-
-## Core Features
-
-### Asset Management
-
-* **Total Asset Tracking**: Real-time accounting of all assets under management
-* **Idle Asset Management**: Tracks assets not currently deployed to strategies
-* **Maximum Capacity**: Configurable deposit caps to manage risk
-
-### LP Token Mechanics
-
-* **Token Issuance**: Mints LP tokens representing proportional vault shares
-* **Share Price Calculation**: LP token value based on total assets
-* **Share-Based Accounting**: User ownership tracked through LP token balances
-
-### Fee Configuration
-
-Fees are set at vault creation and can be updated by the admin afterward. For detailed fee mechanics, see [Fees & Accounting](../fees-and-accounting.md).
+{% content-ref url="quick-start-ui.md" %}
+[quick-start-ui.md](quick-start-ui.md)
+{% endcontent-ref %}

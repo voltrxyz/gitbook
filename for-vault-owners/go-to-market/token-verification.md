@@ -12,10 +12,8 @@ When users receive LP tokens from your vault, their wallets (Phantom, Solflare, 
 
 Before applying for verification:
 
-1. **LP token metadata must be set up** — name, symbol, and image URI
-   → See [Vault Token Metadata](../vault-initialization-guide/vault-token-metadata.md)
+1. **LP token metadata must be set up** — name, symbol, and image URI → See [Vault Token Metadata](../vault-initialization-guide/prerequisites/vault-token-metadata.md)
 2. **Metadata must be hosted** at a publicly accessible URL
-3. **Logo image** must meet Jupiter's requirements (typically PNG, reasonable resolution)
 
 ## Jupiter Verification Process
 
@@ -52,8 +50,8 @@ Verification is not strictly required for your vault to function, but it signifi
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|---------|
-| Metadata not showing in wallets | Ensure `createCreateLpMetadataIx` was executed successfully |
-| Logo not displaying | Verify the image URL in your metadata JSON is publicly accessible |
-| Verification rejected | Review Jupiter's requirements; ensure metadata is complete and accurate |
+| Issue                           | Solution                                                                |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| Metadata not showing in wallets | Ensure `createCreateLpMetadataIx` was executed successfully             |
+| Logo not displaying             | Verify the image URL in your metadata JSON is publicly accessible       |
+| Verification rejected           | Review Jupiter's requirements; ensure metadata is complete and accurate |

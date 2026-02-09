@@ -17,14 +17,14 @@ Indexing is a manual process. Plan for some lead time between completing your va
 
 To be listed on Ranger, you'll need to provide:
 
-| Requirement | Description |
-|-------------|-----------|
-| **Vault public key** | The on-chain address of your vault |
+| Requirement           | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| **Vault public key**  | The on-chain address of your vault                           |
 | **Vault description** | A clear description of the vault's strategy and risk profile |
-| **X (Twitter) link** | Your team/project's X account for verification |
-| **Logo** | A high-quality logo image for display on the Ranger UI |
-| **Webpage** | A link to your project's website or landing page |
-| **Documentation** | Link to any strategy documentation or risk disclosures |
+| **X (Twitter) link**  | Your team/project's X account for verification               |
+| **Logo**              | A high-quality logo image for display on the Ranger UI       |
+| **Webpage**           | A link to your project's website or landing page             |
+| **Documentation**     | Link to any strategy documentation or risk disclosures       |
 
 ## Contacting the Ranger Team
 
@@ -47,7 +47,7 @@ Once indexed, your vault will appear on the Ranger UI with:
 ## Tips for a Smooth Listing
 
 * **Complete all setup first** — don't request listing until strategies are initialized, funds are allocated, and the vault is generating yield
-* **Set up metadata** — ensure your LP token has proper metadata ([Vault Token Metadata](../vault-initialization-guide/vault-token-metadata.md))
+* **Set up metadata** — ensure your LP token has proper metadata ([Vault Token Metadata](../vault-initialization-guide/prerequisites/vault-token-metadata.md))
 * **Verify your LP token** — complete Jupiter verification to avoid wallet warnings ([Token Verification](token-verification.md))
 * **Have automation running** — the Ranger team may check that your vault is actively managed
 * **Prepare marketing materials** — have your description, logo, and links ready
