@@ -48,7 +48,7 @@
 * [Adaptor Creation Guide](for-defi-protocols/adaptor-creation-guide/README.md)
   * [Core Components Implementation](for-defi-protocols/adaptor-creation-guide/core-components-implementation.md)
   * [Security Considerations](for-defi-protocols/adaptor-creation-guide/security-considerations.md)
-* [Example Implementations](for-defi-protocols/example-implementations.md)
+  * [Dummy Implementation](for-defi-protocols/adaptor-creation-guide/example-implementations.md)
 
 ## For Developers
 
