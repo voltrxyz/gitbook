@@ -2,18 +2,32 @@
 
 Before allocating vault funds, ensure you have:
 
-1. A Solana wallet with sufficient SOL for  transaction fees
-2. Access to a Solana RPC endpoint (e.g., Helius)
-3. Required keypair file manager role
-   1. Managers — capable of allocating funds in the vault between initialized strategies
-4. Appointed as a manager to the vault
-5.  The Voltr SDK and other required libraries installed in your project:
+## 1. Manager Keypair & SOL
 
-    ```bash
-    npm install @voltr/vault-sdk @solana/web3.js @coral-xyz/anchor @solana/spl-token
-    ```
+You need the **manager** keypair for your vault. The manager pays for fund allocation transaction fees.
+
+{% hint style="info" %}
+The **manager** pays gas fees for allocation transactions. Additionally, the manager pays rent for any Associated Token Accounts (ATAs) that need to be created during allocation. See [Gas Fees & ATA Costs](../vault-operations/gas-fees-and-ata-costs.md) for detailed cost breakdowns.
+{% endhint %}
+
+## 2. Solana RPC Endpoint
+
+Access to a reliable Solana RPC endpoint (e.g., Helius, Triton, QuickNode).
+
+## 3. Manager Role on the Vault
+
+You must be the designated manager of the vault. Verify by checking the vault's `manager` field matches your keypair.
+
+## 4. Initialized Strategies
+
+Funds can only be allocated to **already initialized** strategies. If you haven't set up strategies yet, see [Strategy Setup Guide](../strategy-setup-guide/README.md).
+
+## 5. SDK & Dependencies
+
+```bash
+npm install @voltr/vault-sdk @solana/web3.js @coral-xyz/anchor @solana/spl-token
+```
 
 Explore SDK documentation:
 
 {% embed url="https://voltrxyz.github.io/vault-sdk/" %}
-

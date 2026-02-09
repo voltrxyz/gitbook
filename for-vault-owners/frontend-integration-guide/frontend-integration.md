@@ -4,6 +4,10 @@
 
 This guide explains how to integrate deposit and withdrawal functionality into your frontend application for the Voltr Protocol.
 
+{% hint style="info" %}
+**API vs SDK**: Use the [Voltr API](https://api.voltr.xyz/docs) for reading vault data (APY, TVL, share price) — it's simpler and doesn't require the SDK. Use the SDK (shown below) for building deposit and withdrawal transactions that users sign with their wallets.
+{% endhint %}
+
 ### Setup
 
 Import the required dependencies:

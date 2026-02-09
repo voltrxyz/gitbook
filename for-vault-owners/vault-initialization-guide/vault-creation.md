@@ -1,12 +1,14 @@
 # Vault Creation
 
-## Voltr Protocol - Vault Creation Guide
+This guide walks through creating and initializing a new vault using the Voltr SDK.
 
-This guide walks through the process of creating and initializing a new vault in the Voltr Protocol.
+{% hint style="info" %}
+**Prefer the UI?** You can create a vault without code at [vaults.ranger.finance/create](https://vaults.ranger.finance/create). See [Quick Start (UI)](../getting-started/quick-start-ui.md).
+{% endhint %}
 
-### Setup
+## Setup
 
-First, import the required dependencies:
+Import the required dependencies:
 
 ```typescript
 import { BN } from "@coral-xyz/anchor";
@@ -20,13 +22,13 @@ import {
 import fs from "fs";
 ```
 
-### Step-by-Step Guide
+## Step-by-Step Guide
 
-#### 1. Prepare Vault Configurations
+### 1. Prepare Vault Configuration
 
 ```typescript
 const vaultConfig: VaultConfig = {
-  maxCap: new BN(0),                              // Maximum vault capacity (0 = unlimited)
+  maxCap: new BN("18446744073709551615"),         // Uncapped (u64 max) — see warning below
   startAtTs: new BN(0),                           // Activation timestamp (0 = immediate)
   lockedProfitDegradationDuration: new BN(86400), // 24 hours in seconds
   managerPerformanceFee: 1000,                    // 10% in basis points
@@ -40,12 +42,20 @@ const vaultConfig: VaultConfig = {
 
 const vaultParams: VaultParams = {
   config: vaultConfig,
-  name: "My Voltr Vault",
-  description: "Description of your vault strategy"
+  name: "My Voltr Vault",                         // Max 32 characters
+  description: "Short vault strategy description", // Max 64 characters
 };
 ```
 
-#### 2. Define Required Variables
+{% hint style="danger" %}
+**Critical: maxCap of 0 means ZERO capacity, not unlimited.** Setting `maxCap: new BN(0)` will prevent all deposits. For an uncapped vault, use `new BN("18446744073709551615")` (u64 max value).
+{% endhint %}
+
+{% hint style="warning" %}
+**Description limit**: The description field is limited to **64 characters**. Exceeding this limit will cause the vault creation transaction to fail.
+{% endhint %}
+
+### 2. Define Required Variables
 
 ```typescript
 // File paths for keypairs
@@ -56,7 +66,7 @@ const managerFilePath = "/path/to/manager.json";
 const assetMintAddress = "..."; // Your asset token mint
 const solanaRpcUrl = "your-solana-rpc-url";
 
-// load keypairs
+// Load keypairs
 const adminKp = Keypair.fromSecretKey(
   Uint8Array.from(JSON.parse(fs.readFileSync(adminFilePath, "utf-8")))
 );
@@ -72,10 +82,9 @@ const connection = new Connection(solanaRpcUrl);
 const client = new VoltrClient(connection);
 ```
 
-#### 3. Create Vault Initialization Instruction
+### 3. Create Vault Initialization Instruction
 
 ```typescript
-// Create initialization instruction
 const createVaultIx = await client.createInitializeVaultIx(
   vaultParams,
   {
@@ -88,20 +97,22 @@ const createVaultIx = await client.createInitializeVaultIx(
 );
 ```
 
-#### 4. Send and Confirm the Instruction
+### 4. Send and Confirm the Transaction
 
 ```typescript
-// Send and confirm transaction
 const txSig = await sendAndConfirmTransaction(
   [createVaultIx],
   connection,
   [adminKp, vaultKp]
 );
+
+console.log("Vault created:", vaultKp.publicKey.toBase58());
+console.log("Transaction:", txSig);
 ```
 
-### Account Structure
+**Save your vault public key** — you'll need it for all subsequent operations.
 
-#### Vault Account
+## Account Structure
 
 The vault account contains the following data:
 
@@ -129,22 +140,31 @@ interface Vault {
     issuanceFee: number;                     // In basis points
   };
   feeState: {
-    accumulatedLpAdminFees: BN;              // Accumulated LP admin fees
-    accumulatedLpManagerFees: BN;            // Accumulated LP manager fees
-    accumulatedLpProtocolFees: BN;           // Accumulated LP protocol fees
+    accumulatedLpAdminFees: BN;
+    accumulatedLpManagerFees: BN;
+    accumulatedLpProtocolFees: BN;
   };
   highWaterMark: {
-    highestAssetPerLpDecimalBits: BN;        // Highest asset per LP (decimal bits)
-    lastUpdatedTs: BN;                       // Last updated timestamp
+    highestAssetPerLpDecimalBits: BN;
+    lastUpdatedTs: BN;
   };
   admin: PublicKey;       // Vault admin authority
   manager: PublicKey;     // Vault manager authority
 }
 ```
 
-### Important Considerations
+## What's Next?
 
-#### Security Best Practices
+{% hint style="warning" %}
+**Your vault won't generate yield yet.** After creation, deposited funds sit idle in the vault's token account. You must:
+1. [Set up LP token metadata](vault-token-metadata.md) so wallets display your token correctly
+2. [Initialize strategies](../strategy-setup-guide/README.md) to connect to DeFi protocols
+3. [Allocate funds](../fund-allocation-guide/README.md) to move idle funds into strategies
+{% endhint %}
+
+## Important Considerations
+
+### Security Best Practices
 
 1. **Key Management**:
    * Keep admin and manager keys separate
@@ -156,26 +176,20 @@ interface Vault {
    * Consider the impact on user returns
 3. **Asset Handling**:
    * Validate token decimals match between asset and LP tokens
-   * Set appropriate maxCap to prevent overflow
+   * Set appropriate maxCap to manage risk
    * Account for minimum deposit requirements
 
-#### Error Handling
+### Error Handling
 
 Common error scenarios and solutions:
 
 1. **Initialization Failures**:
    * Verify account rent exemption
    * Check authority permissions
-   * Ensure unique vault name
-2. **Strategy Integration**:
-   * Validate strategy program compatibility
-   * Check account ownership
-   * Verify remaining account requirements
-3. **Transaction Failures**:
-   * Monitor for insufficient funds
+   * Ensure description is within 64 characters
+2. **Transaction Failures**:
+   * Monitor for insufficient SOL
    * Handle RPC timeouts
    * Implement proper retry logic
-
-
 
 For additional support or questions, refer to the [Voltr SDK documentation](https://voltrxyz.github.io/vault-sdk/) or [example scripts](https://github.com/voltrxyz/client-scripts).

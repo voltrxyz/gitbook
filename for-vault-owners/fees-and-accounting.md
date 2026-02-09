@@ -1,6 +1,8 @@
 # Fees & Accounting
 
-When the vault realizes a profit, that profit increases the overall asset value. However, not all of this profit is immediately available for fee collection. A portion is “locked” and gradually becomes available (or “unlocked”) over time. Fees are only charged on new profits that exceed a historical peak—this is known as the **high water mark**.
+Fee parameters are configured at vault creation and can be **updated by the admin** at any time. See [Vault Configuration Updates](vault-initialization-guide/vault-configuration-updates.md) for how to modify fees after creation.
+
+When the vault realizes a profit, that profit increases the overall asset value. However, not all of this profit is immediately available for fee collection. A portion is "locked" and gradually becomes available (or "unlocked") over time. Fees are only charged on new profits that exceed a historical peak—this is known as the **high water mark**.
 
 ***
 
