@@ -28,6 +28,30 @@ The Voltr team provides reference scripts for common operations:
 | [voltrxyz/spot-scripts](https://github.com/voltrxyz/spot-scripts)                               | Jupiter Swap/Lend strategy init                            |
 | [voltrxyz/client-raydium-clmm-scripts](https://github.com/voltrxyz/client-raydium-clmm-scripts) | Raydium CLMM strategy init                                 |
 | [voltrxyz/trustful-scripts](https://github.com/voltrxyz/trustful-scripts)                       | Trustful adaptor strategy init                             |
+| [voltrxyz/rebalance-bot-template](https://github.com/voltrxyz/rebalance-bot-template)           | Production-ready rebalance bot (equal-weight allocation)   |
+
+## Rebalance Bot Template
+
+The [rebalance-bot-template](https://github.com/voltrxyz/rebalance-bot-template) is a production-ready bot that handles the core automation tasks listed above. It distributes funds equally across lending strategies on a fixed schedule and includes:
+
+- **Rebalance loop** — equal-weight allocation across all strategies, triggered on interval and on new deposits
+- **Refresh loop** — keeps on-chain receipt values up to date
+- **Harvest fee loop** — collects protocol/admin/manager fees
+- **Claim reward loops** — claims Kamino farm rewards and swaps them back via Jupiter
+
+Supports Drift, Jupiter Lend, Kamino Market, and Kamino Vault strategies out of the box.
+
+[![Run on Replit](https://replit.com/badge/github/voltrxyz/rebalance-bot-template)](https://replit.com/github/voltrxyz/rebalance-bot-template)
+
+```bash
+git clone https://github.com/voltrxyz/rebalance-bot-template.git
+cd rebalance-bot-template
+pnpm install
+cp .env.example .env   # fill in your vault addresses and keypair
+pnpm run build && pnpm start
+```
+
+See the [repository README](https://github.com/voltrxyz/rebalance-bot-template#readme) for full configuration options and Replit deployment instructions.
 
 ## Script Structure Example
 
