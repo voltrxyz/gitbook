@@ -26,15 +26,15 @@ The Voltr SDK provides development tools, documentation, and technical infrastru
 * No warranty regarding third-party integrations or dependencies
 * No guarantee that the SDK will meet your specific requirements
 
-#### 2.2 Alpha/Beta Software Risks
+#### 2.2 Software Risks
 
-Components of the SDK may be in **alpha or beta status** and may contain:
+Components of the SDK may contain:
 
 * Bugs, errors, or incomplete functionality
 * Security vulnerabilities or design flaws
 * Incompatible changes in future versions
 * Unexpected behavior or performance issues
-* **Use alpha/beta components at your own risk**
+* **Use at your own risk**
 
 #### 2.3 Documentation Limitations
 
