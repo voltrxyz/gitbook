@@ -53,6 +53,8 @@
   * [Deposit](for-defi-protocols/cpi-integration-guide/deposit.md)
   * [Request Withdraw](for-defi-protocols/cpi-integration-guide/request-withdraw.md)
   * [Withdraw](for-defi-protocols/cpi-integration-guide/withdraw.md)
+  * [Cancel Request Withdraw](for-defi-protocols/cpi-integration-guide/cancel-request-withdraw.md)
+  * [Instant Withdraw](for-defi-protocols/cpi-integration-guide/instant-withdraw.md)
 
 ## For Developers
 

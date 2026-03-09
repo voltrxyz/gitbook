@@ -13,10 +13,16 @@ Users deposit assets into a vault and receive LP tokens representing their share
 1. **Request withdrawal** — locks LP tokens into an escrow receipt
 2. **Claim withdrawal** — after the vault's waiting period, burns the locked LP tokens and returns the underlying assets
 
-```
-Deposit:  User Assets ──► Vault ──► LP Tokens to User
+Alternatively, vaults with a zero waiting period support **instant withdrawal**, which combines both steps into a single transaction. Users can also **cancel** a pending withdrawal request to reclaim their LP tokens.
 
-Withdraw: LP Tokens ──► Escrow Receipt ──(waiting period)──► Assets to User
+```
+Deposit:          User Assets ──► Vault ──► LP Tokens to User
+
+Withdraw:         LP Tokens ──► Escrow Receipt ──(waiting period)──► Assets to User
+
+Cancel Withdraw:  Escrow Receipt ──► LP Tokens back to User
+
+Instant Withdraw: LP Tokens ──► Assets to User (single transaction)
 ```
 
 ### Deployed Address
@@ -32,6 +38,8 @@ Withdraw: LP Tokens ──► Escrow Receipt ──(waiting period)──► Ass
 | `deposit_vault` | Deposit assets and receive LP tokens | [Deposit](deposit.md) |
 | `request_withdraw_vault` | Lock LP tokens into an escrow receipt | [Request Withdraw](request-withdraw.md) |
 | `withdraw_vault` | Claim assets after the waiting period | [Withdraw](withdraw.md) |
+| `cancel_request_withdraw_vault` | Cancel a pending withdrawal request | [Cancel Request Withdraw](cancel-request-withdraw.md) |
+| `instant_withdraw_vault` | Withdraw assets instantly (zero waiting period vaults) | [Instant Withdraw](instant-withdraw.md) |
 
 ### PDA Derivation
 
@@ -57,6 +65,7 @@ Your program should handle the following errors from the Voltr Vault program:
 | `InvalidAmount` | Input amount is zero or invalid |
 | `MaxCapExceeded` | Deposit would exceed the vault's maximum capacity |
 | `WithdrawalNotYetAvailable` | `withdraw_vault` called before the waiting period has passed |
+| `InstantWithdrawNotAllowed` | `instant_withdraw_vault` called on a vault with a non-zero waiting period |
 | `OperationNotAllowed` | The protocol has globally disabled the attempted operation |
 
 ### Reference Repository
@@ -73,4 +82,12 @@ Full reference implementations are available at [github.com/voltrxyz/vault-cpi](
 
 {% content-ref url="withdraw.md" %}
 [withdraw.md](withdraw.md)
+{% endcontent-ref %}
+
+{% content-ref url="cancel-request-withdraw.md" %}
+[cancel-request-withdraw.md](cancel-request-withdraw.md)
+{% endcontent-ref %}
+
+{% content-ref url="instant-withdraw.md" %}
+[instant-withdraw.md](instant-withdraw.md)
 {% endcontent-ref %}
